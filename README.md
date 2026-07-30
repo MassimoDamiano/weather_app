@@ -1,16 +1,77 @@
-# weather_app
+# Weather App
 
-A new Flutter project.
+Aplicación móvil desarrollada con Flutter que consume una API meteorológica para mostrar el clima actual y el pronóstico de distintas ciudades. Estamos usando una organización tipo Feature First: todo lo que pertenece al clima queda dentro de features/weather.
 
-## Getting Started
+Movil app developed whit flutter, show the actual weather
 
-This project is a starting point for a Flutter application.
+## How works? 
 
-A few resources to get you started if this is your first Flutter project:
+    Usuario abre HomeScreen
+            ↓
+    WeatherProvider
+            ↓
+    necesita coordenadas
+            ↓
+    LocationService
+            ↓
+    lat / lon
+            ↓
+    WeatherProvider
+            ↓
+    WeatherRepository
+            ↓
+    WeatherService
+            ↓
+    OpenWeather
+            ↓
+    JSON
+            ↓
+    Weather
+            ↓
+    Repository
+            ↓
+    Provider
+            ↓
+    notifyListeners()
+            ↓
+    HomeScreen se actualiza
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Características
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Buscar ciudades
+- Clima actual
+- Pronóstico
+- Temperatura
+- Humedad
+- Viento
+
+## Tecnologías
+
+- Flutter
+- Dart
+- REST API
+- HTTP
+- JSON
+
+## Arquitectura
+
+- Models
+- Services
+- Screens
+- Widgets
+
+## Capturas
+
+(imágenes)
+
+
+
+## Instalación
+
+flutter pub get
+
+flutter run
+
+## Autor
+
+Massimo Damiano
