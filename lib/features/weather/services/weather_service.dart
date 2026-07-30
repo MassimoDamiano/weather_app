@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:weather_app/core/constants/api_constants.dart';
 import '../models/weather.dart';
 
 class WeatherService {
@@ -14,7 +15,7 @@ class WeatherService {
       {
         'lat': lat.toString(),
         'lon': lon.toString(),
-        'appid': 'TU_API_KEY',
+        'appid': ApiConstants.apiKey,
         'units': 'metric',
         'lang': 'es',
       },
@@ -27,7 +28,6 @@ class WeatherService {
     // 3. Comprobar statusCode
    if (response.statusCode == 200) {
   final data = jsonDecode(response.body); //para convertir ese JSON
-
   return Weather(
     temperature: (data['main']['temp'] as num).toDouble(),
     maxTemp: (data['main']['temp_max'] as num).toDouble(),
