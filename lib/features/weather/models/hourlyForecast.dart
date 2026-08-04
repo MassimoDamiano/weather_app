@@ -12,4 +12,7 @@ class Hourlyforecast {
     required this.dateTime,
     required this.iconCode,
   });
+
+
+  
 }

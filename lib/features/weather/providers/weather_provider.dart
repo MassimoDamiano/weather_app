@@ -47,8 +47,8 @@ class WeatherProvider extends ChangeNotifier {
       
       final weather = await _repository.getCurrentWeather(position.latitude, position.longitude);
       _weather = weather;
-    } catch (e) {
-      _error = e.toString();
+    } catch (error) {
+      _error = error.toString();
     } finally {
       _isLoading = false;
     }
