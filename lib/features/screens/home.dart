@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/core/theme/app_spacing.dart';
-import 'package:weather_app/features/weather/models/city.dart';
-import 'package:weather_app/features/weather/models/hourlyForecast.dart';
+import 'package:weather_app/features/screens/search.dart';
+import 'package:weather_app/features/weather/models/location_search_result.dart';
 import 'package:weather_app/features/weather/providers/weather_provider.dart';
+import 'package:weather_app/features/weather/widgets/weather_background.dart';
+import 'package:weather_app/features/weather/widgets/weather_map_card.dart';
 import 'package:weather_app/features/weather/widgets/weekly_forecast_card.dart';
 
 class Home extends StatefulWidget {
@@ -22,6 +24,20 @@ class _HomeState extends State<Home> {
         .initState(); //“Antes de hacer mis cosas, dejá que Flutter inicialice correctamente el State.”
     final provider = context.read<WeatherProvider>();
     provider.loadCurrentWeather();
+    provider.loadRadar();
+  }
+
+  Future<void> _openSearch() async {
+    final location = await Navigator.of(context).push<LocationSearchResult>(
+      MaterialPageRoute(builder: (_) => const SearchScreen()),
+    );
+
+    if (!mounted || location == null) return;
+
+    await context.read<WeatherProvider>().loadWeather(
+      location.latitude,
+      location.longitude,
+    );
   }
 
   @override
@@ -44,83 +60,93 @@ class _HomeState extends State<Home> {
       return Text("error");
     }
 
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color.fromARGB(255, 99, 164, 233), Color(0xFF1E3C72)],
-        ),
-      ),
+    return WeatherBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            IconButton(
+              onPressed: _openSearch,
+              tooltip: 'Buscar ciudad',
+              icon: const Icon(Icons.search),
+            ),
+          ],
+        ),
 
         body: SafeArea(
-          child: Column(
-            children: [
-              Spacer(),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: AppSpacing.xl),
 
-              Center(
-                child: Column(
-                  children: [
-                    Text(
-                      weather.city.name,
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                    Text(
-                      '${weather.temperature.round()}°',
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
-                    Text(
-                      weather.description,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ],
-                ),
-              ),
-              Spacer(),
-
-              Container(
-                height: 120,
-                margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                padding: const EdgeInsets.all(AppSpacing.md),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.20),
+                Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        weather.city.name,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      Text(
+                        '${weather.temperature.round()}°',
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                      Text(
+                        weather.description,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
                   ),
                 ),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: weather.hourlyForecasts.length,
-                  itemBuilder: (context, index) {
-                    final hourly = weather.hourlyForecasts[index];
+                const SizedBox(height: AppSpacing.xl),
 
-                    return Padding(
-                      padding: EdgeInsets.only(right: AppSpacing.md),
-                      child: Column(
-                        children: [
-                          formatHour(context, hourly.dateTime),
-                          buildWeatherIcon(hourly.iconCode),
-                          Text(
-                            '${hourly.temperature.round()}°',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                Container(
+                  height: 120,
+                  margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.14),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.20),
+                    ),
+                  ),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: weather.hourlyForecasts.length,
+                    itemBuilder: (context, index) {
+                      final hourly = weather.hourlyForecasts[index];
+
+                      return Padding(
+                        padding: EdgeInsets.only(right: AppSpacing.md),
+                        child: Column(
+                          children: [
+                            formatHour(context, hourly.dateTime),
+                            buildWeatherIcon(hourly.iconCode),
+                            Text(
+                              '${hourly.temperature.round()}°',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              // Acá después hacés la sección por hora
-              Spacer(),
+                // Acá después hacés la sección por hora
+                const SizedBox(height: AppSpacing.lg),
 
-              WeeklyForecastCard(forecasts: weather.dailyForecasts),
-              // Acá después hacés la sección semanal
-            ],
+                WeeklyForecastCard(forecasts: weather.dailyForecasts),
+                const SizedBox(height: AppSpacing.md),
+                WeatherMapCard(
+                  city: weather.city,
+                  radarFrame: weatherProvider.radarFrame,
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                // Acá después hacés la sección semanal
+              ],
+            ),
           ),
         ),
       ),

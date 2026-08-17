@@ -1,77 +1,65 @@
 # Weather App
 
-Aplicación móvil desarrollada con Flutter que consume una API meteorológica para mostrar el clima actual y el pronóstico de distintas ciudades. Estamos usando una organización tipo Feature First: todo lo que pertenece al clima queda dentro de features/weather.
+Aplicación multiplataforma desarrollada con Flutter para consultar el clima actual y el pronóstico de cualquier ciudad. El frontend se comunica con una API propia en ASP.NET Core, por lo que la clave del proveedor meteorológico nunca queda expuesta en la aplicación.
 
-Movil app developed whit flutter, show the actual weather
+## Funcionalidades
 
-## How works? 
-
-    Usuario abre HomeScreen
-            ↓
-    WeatherProvider
-            ↓
-    necesita coordenadas
-            ↓
-    LocationService
-            ↓
-    lat / lon
-            ↓
-    WeatherProvider
-            ↓
-    WeatherRepository
-            ↓
-    WeatherService
-            ↓
-    OpenWeather
-            ↓
-    JSON
-            ↓
-    Weather
-            ↓
-    Repository
-            ↓
-    Provider
-            ↓
-    notifyListeners()
-            ↓
-    HomeScreen se actualiza
-
-## Características
-
-- Buscar ciudades
-- Clima actual
-- Pronóstico
-- Temperatura
-- Humedad
-- Viento
-
-## Tecnologías
-
-- Flutter
-- Dart
-- REST API
-- HTTP
-- JSON
+- Búsqueda de ciudades con resultados coincidentes por país y provincia/estado.
+- Clima actual, sensación térmica, humedad y viento.
+- Pronóstico por hora y por día.
+- Ubicación actual del dispositivo.
+- Mapa meteorológico con radar de precipitaciones.
+- Estados de carga y manejo de errores de red.
 
 ## Arquitectura
 
-- Models
-- Services
-- Screens
-- Widgets
+```text
+Flutter UI
+    ↓
+Provider (estado de la aplicación)
+    ↓
+Repositories (reglas de acceso a datos)
+    ↓
+Services (peticiones HTTP y ubicación)
+    ↓
+WeatherApi (backend ASP.NET Core)
+    ↓
+OpenWeather
+```
 
-## Capturas
+El código está organizado por funcionalidad (`features/weather`) y separa modelos, servicios, repositorios, providers, pantallas y widgets.
 
-(imágenes)
+## Tecnologías
 
+- Flutter y Dart
+- Provider
+- HTTP/REST y JSON
+- Geolocator
+- Flutter Map y RainViewer
+- Backend en ASP.NET Core: [weather-app-backend](https://github.com/MassimoDamiano/weather-app-backend)
 
+## Ejecución local
 
-## Instalación
+Primero iniciá el backend en `http://localhost:5270`. Después, desde este proyecto:
 
+```bash
 flutter pub get
+flutter run -d chrome --dart-define=API_BASE_URL=http://localhost:5270
+```
 
-flutter run
+Para generar la versión web indicando el backend publicado:
+
+```bash
+flutter build web --dart-define=API_BASE_URL=https://TU-BACKEND.azurewebsites.net
+```
+
+## Calidad
+
+```bash
+flutter analyze
+flutter test
+```
 
 ## Autor
 
-Massimo Damiano
+[Massimo Damiano](https://github.com/MassimoDamiano)

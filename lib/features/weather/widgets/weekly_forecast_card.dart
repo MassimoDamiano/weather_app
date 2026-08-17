@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:weather_app/core/theme/app_spacing.dart';
-import 'package:weather_app/features/weather/models/dailyForecast.dart';
+import 'package:weather_app/features/weather/models/daily_forecast.dart';
 
 class WeeklyForecastCard extends StatelessWidget {
-  final List<Dailyforecast> forecasts;
+  final List<DailyForecast> forecasts;
 
   const WeeklyForecastCard({super.key, required this.forecasts});
 
@@ -14,13 +14,13 @@ class WeeklyForecastCard extends StatelessWidget {
     final weeklyMin = forecasts.isEmpty
         ? 0.0
         : forecasts
-            .map((forecast) => forecast.minTemp)
-            .reduce((current, value) => min(current, value).toDouble());
+              .map((forecast) => forecast.minTemp)
+              .reduce((current, value) => min(current, value).toDouble());
     final weeklyMax = forecasts.isEmpty
         ? 1.0
         : forecasts
-            .map((forecast) => forecast.maxTemp)
-            .reduce((current, value) => max(current, value).toDouble());
+              .map((forecast) => forecast.maxTemp)
+              .reduce((current, value) => max(current, value).toDouble());
 
     return Container(
       height: 400,
@@ -77,10 +77,8 @@ class WeeklyForecastCard extends StatelessWidget {
                         'https://openweathermap.org/img/wn/${daily.iconCode}@2x.png',
                         width: 38,
                         height: 38,
-                        errorBuilder: (_, __, ___) => const Icon(
-                          Icons.cloud,
-                          color: Colors.white,
-                        ),
+                        errorBuilder: (_, __, ___) =>
+                            const Icon(Icons.cloud, color: Colors.white),
                       ),
                       const Spacer(),
                       Text(
@@ -114,8 +112,7 @@ class WeeklyForecastCard extends StatelessWidget {
 
   String _dayLabel(DateTime date) {
     final today = DateTime.now();
-    if (
-        date.year == today.year &&
+    if (date.year == today.year &&
         date.month == today.month &&
         date.day == today.day) {
       return 'Hoy';
@@ -143,10 +140,12 @@ class _TemperatureRangeBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final temperatureSpan = weeklyMax - weeklyMin;
     final safeSpan = temperatureSpan == 0 ? 1.0 : temperatureSpan;
-    final startRatio =
-        ((minTemperature - weeklyMin) / safeSpan).clamp(0.0, 1.0).toDouble();
-    final endRatio =
-        ((maxTemperature - weeklyMin) / safeSpan).clamp(0.0, 1.0).toDouble();
+    final startRatio = ((minTemperature - weeklyMin) / safeSpan)
+        .clamp(0.0, 1.0)
+        .toDouble();
+    final endRatio = ((maxTemperature - weeklyMin) / safeSpan)
+        .clamp(0.0, 1.0)
+        .toDouble();
 
     return SizedBox(
       width: 72,
