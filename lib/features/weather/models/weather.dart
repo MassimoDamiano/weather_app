@@ -1,7 +1,7 @@
 // Modelo principal con la información climática que se muestra en Home.
 import 'city.dart';
-import '../models/hourlyForecast.dart';
-import '../models/dailyForecast.dart';
+import 'daily_forecast.dart';
+import 'hourly_forecast.dart';
 
 class Weather {
   final double temperature;
@@ -13,8 +13,8 @@ class Weather {
   final double windSpeed;
   final double feelsLike; //Sensacion termica
   final City city;
-  final List<Hourlyforecast> hourlyForecasts;
-  final List<Dailyforecast> dailyForecasts;
+  final List<HourlyForecast> hourlyForecasts;
+  final List<DailyForecast> dailyForecasts;
 
   Weather({
     required this.city,
@@ -28,7 +28,25 @@ class Weather {
     required this.humidity,
     required this.windSpeed,
     required this.feelsLike,
-    required Hourlyforecast hourlyForecast,
-    required Dailyforecast dailyForecast,
   });
+
+  factory Weather.fromJson(Map<String, dynamic> json) {
+    return Weather(
+      city: City.fromJson(json['city'] as Map<String, dynamic>),
+      temperature: (json['temperature'] as num).toDouble(),
+      maxTemp: (json['maxTemp'] as num).toDouble(),
+      minTemp: (json['minTemp'] as num).toDouble(),
+      description: json['description'] as String,
+      iconCode: json['iconCode'] as String,
+      humidity: (json['humidity'] as num).toInt(),
+      windSpeed: (json['windSpeed'] as num).toDouble(),
+      feelsLike: (json['feelsLike'] as num).toDouble(),
+      hourlyForecasts: (json['hourlyForecasts'] as List<dynamic>)
+          .map((item) => HourlyForecast.fromJson(item as Map<String, dynamic>))
+          .toList(),
+      dailyForecasts: (json['dailyForecasts'] as List<dynamic>)
+          .map((item) => DailyForecast.fromJson(item as Map<String, dynamic>))
+          .toList(),
+    );
+  }
 }

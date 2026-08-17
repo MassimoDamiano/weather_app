@@ -32,6 +32,12 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
+/dist/
+
+# Local editor and Codex/Sites artifacts
+.vs/
+.openai/
+.sites-stage/
 
 # Symbolication related
 app.*.symbols

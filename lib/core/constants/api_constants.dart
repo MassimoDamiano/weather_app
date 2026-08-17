@@ -1,3 +1,6 @@
 class ApiConstants {
-  static const String apiKey ='8ab7c4e13350022a0297a5a45d9b754f';
+  static const String backendBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:5270',
+  );
 }
