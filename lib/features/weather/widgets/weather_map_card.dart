@@ -94,21 +94,50 @@ class WeatherMapCard extends StatelessWidget {
                   ),
                   if (radarFrame == null)
                     const Center(child: CircularProgressIndicator()),
-                  RichAttributionWidget(
-                    attributions: [
-                      TextSourceAttribution(
-                        '© OpenStreetMap contributors, SRTM',
-                        onTap: () => launchUrl(
-                          Uri.parse('https://www.openstreetmap.org/copyright'),
-                        ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 2,
                       ),
-                      TextSourceAttribution(
-                        '© OpenTopoMap (CC-BY-SA)',
-                        onTap: () => launchUrl(
-                          Uri.parse('https://opentopomap.org/about'),
-                        ),
+                      color: Colors.black54,
+                      child: Wrap(
+                        alignment: WrapAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () => launchUrl(
+                              Uri.parse(
+                                'https://www.openstreetmap.org/copyright',
+                              ),
+                            ),
+                            child: const Text(
+                              '© OpenStreetMap contributors, SRTM',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 8,
+                              ),
+                            ),
+                          ),
+                          const Text(
+                            ' | ',
+                            style: TextStyle(color: Colors.white, fontSize: 8),
+                          ),
+                          GestureDetector(
+                            onTap: () => launchUrl(
+                              Uri.parse('https://opentopomap.org/about'),
+                            ),
+                            child: const Text(
+                              '© OpenTopoMap (CC-BY-SA)',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 8,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
