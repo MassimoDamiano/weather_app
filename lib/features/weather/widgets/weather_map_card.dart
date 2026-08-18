@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:weather_app/core/theme/app_spacing.dart';
 import 'package:weather_app/features/weather/models/city.dart';
 import 'package:weather_app/features/weather/models/radar_frame.dart';
@@ -63,7 +64,8 @@ class WeatherMapCard extends StatelessWidget {
                   TileLayer(
                     urlTemplate:
                         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    userAgentPackageName: 'com.example.weather_app',
+                    userAgentPackageName: 'com.massimodamiano.weatherapp',
+                    panBuffer: 0,
                   ),
                   if (radarFrame != null)
                     Opacity(
@@ -92,6 +94,16 @@ class WeatherMapCard extends StatelessWidget {
                   ),
                   if (radarFrame == null)
                     const Center(child: CircularProgressIndicator()),
+                  RichAttributionWidget(
+                    attributions: [
+                      TextSourceAttribution(
+                        'OpenStreetMap contributors',
+                        onTap: () => launchUrl(
+                          Uri.parse('https://www.openstreetmap.org/copyright'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
