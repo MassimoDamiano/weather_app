@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/core/formatters/weather_description_formatter.dart';
 import 'package:weather_app/core/theme/app_spacing.dart';
 import 'package:weather_app/features/screens/search.dart';
 import 'package:weather_app/features/weather/models/location_search_result.dart';
@@ -93,7 +94,7 @@ class _HomeState extends State<Home> {
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
                       Text(
-                        weather.description,
+                        WeatherDescriptionFormatter.format(weather.description),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ],
