@@ -62,10 +62,10 @@ class WeatherMapCard extends StatelessWidget {
                 ),
                 children: [
                   TileLayer(
-                    urlTemplate:
-                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    urlTemplate: 'https://tile.opentopomap.org/{z}/{x}/{y}.png',
                     userAgentPackageName: 'com.massimodamiano.weatherapp',
                     panBuffer: 0,
+                    maxNativeZoom: 17,
                   ),
                   if (radarFrame != null)
                     Opacity(
@@ -97,9 +97,15 @@ class WeatherMapCard extends StatelessWidget {
                   RichAttributionWidget(
                     attributions: [
                       TextSourceAttribution(
-                        'OpenStreetMap contributors',
+                        '© OpenStreetMap contributors, SRTM',
                         onTap: () => launchUrl(
                           Uri.parse('https://www.openstreetmap.org/copyright'),
+                        ),
+                      ),
+                      TextSourceAttribution(
+                        '© OpenTopoMap (CC-BY-SA)',
+                        onTap: () => launchUrl(
+                          Uri.parse('https://opentopomap.org/about'),
                         ),
                       ),
                     ],
